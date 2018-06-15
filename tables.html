@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
     crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Orbitron" rel="stylesheet">
   <script src="https://code.jquery.com/jquery.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <style>
@@ -15,12 +16,115 @@
       background-color: #7fffd4;
     }
 
-    ;
-    footer {
-      margin-top: 2%;
+    .container {
+      font-family: 'Orbitron', sans-serif;
+
     }
 
-    ;
+    footer {
+      margin-top: 1%;
+    }
+
+    .title {
+      color: white;
+    }
+
+    button:hover {
+      animation: shake 0.5s;
+      animation-iteration-count: infinite;
+    }
+
+    @keyframes shake {
+      0% {
+        transform: translate(1px, 1px) rotate(0deg);
+      }
+      10% {
+        transform: translate(-1px, -2px) rotate(-1deg);
+      }
+      20% {
+        transform: translate(-3px, 0px) rotate(1deg);
+      }
+      30% {
+        transform: translate(3px, 2px) rotate(0deg);
+      }
+      40% {
+        transform: translate(1px, -1px) rotate(1deg);
+      }
+      50% {
+        transform: translate(-1px, 2px) rotate(-1deg);
+      }
+      60% {
+        transform: translate(-3px, 1px) rotate(0deg);
+      }
+      70% {
+        transform: translate(3px, 1px) rotate(-1deg);
+      }
+      80% {
+        transform: translate(-1px, -1px) rotate(1deg);
+      }
+      90% {
+        transform: translate(1px, 2px) rotate(0deg);
+      }
+      100% {
+        transform: translate(1px, -2px) rotate(-1deg);
+      }
+    }
+
+    .jumbotron {
+      background-color: #0000FF;
+      -webkit-box-shadow: 0 10px 6px -6px #777;
+      -moz-box-shadow: 0 10px 6px -6px #777;
+      box-shadow: 0 10px 6px -6px #777;
+    }
+
+    .amount {
+      animation-name: annoying2;
+      animation-duration: 0.5s;
+      animation-iteration-count: infinite;
+    }
+
+    @keyframes annoying2 {
+      0% {
+        color: #00FFFF;
+      }
+      25% {
+        color: #FF00FF;
+      }
+      50% {
+        color: #FFFF00;
+      }
+      100% {
+        color: #00FF33;
+      }
+    }
+
+    .links {
+      color: white;
+      text-align: center;
+    }
+
+    a {
+      color: white;
+      text-align: center;
+    }
+
+    .reser {
+      background-color: #0000FF;
+      color: white;
+      padding: 1%;
+      -webkit-box-shadow: 0 10px 6px -6px #777;
+      -moz-box-shadow: 0 10px 6px -6px #777;
+      box-shadow: 0 10px 6px -6px #777;
+      margin: 1%;
+    }
+
+    hr {
+      background-color: white;
+    }
+
+   .close {
+     text-align: right;
+    }
   </style>
   <title>Tables</title>
 </head>
@@ -28,7 +132,7 @@
 <body>
   <div class="container">
     <div class="jumbotron">
-      <h1 class="text-center">
+      <h1 class="text-center title">
         <span class="fas fa-utensils fa-large"></span> Reservacion
         <span class="fas fa-utensils fa-large"></span>
       </h1>
@@ -62,10 +166,10 @@
 
     <footer>
       <div class="foot container">
-        <p>
-          <a href="/api/tables">API Table Link</a>
+        <p class="links">
+          <a href="https://jeffreylee87.github.io/Actual-Portfolio/">Jeff's Portfolio</a>
           |
-          <a href="temp">API Wait List</a>
+          <a href="/api/tables">API Table Link</a>
           |
           <a href="https://github.com/jeffreylee87/reservacionAPP">Github Repo</a>
         </p>
@@ -73,25 +177,39 @@
     </footer>
   </div>
   <script type="text/javascript">
-    $.get("/api/tables", function (data) {
-      $(".amount").html(`${data.length} Reservations`);
-      if (data) {
-        for (var i in data) {
-          // var div = $("<div class='reser'>");
+    //dynamically includes all the api data
+    
 
+    $.get("/api/tables", function (data) {
+      if (data.length > 1) {
+        $(".amount").html(`${data.length} Reservations`);
+      } else if (data.length === 1) {
+        $(".amount").html(`${data.length} Reservation`);
+      } else {
+        $(".amount").html(`No Reservations`);
+      };
+      if (data) {
+        var div = $(`<div class='reser rounded num${data.length}'>`);
+        for (var i in data) {
           var span = $(
-            `<h2><span class="label label-primary">${parseInt(i) + 1}</span> | : ${data[i].customerName} - ${data[i].customerID}</h2>`
+            `<h2><span class="label label-primary">${parseInt(i) + 1}</span> | : ${data[i].customerName} - ${data[i].customerID}<p class="close">X</p></h2>`
           );
-          $("#tableSection").append(span);
-          // $(".reser").append(span);
+          $("#tableSection").append(div);
+          $(".reser").append(span);
         }
       } else {
-        // var div = $("<div class='reser'>");
+        var div = $("<div class='reser rounded'>");
         var span = $(`<span class="label label-primary">No Reservations</span>`);
-        $("#tableSection").append(span);
-        // $(".reser").append(span);
+        $("#tableSection").append(div);
+        $(".reser").append(span);
       }
 
+    });
+
+    $('.close').on("click", function (event) {
+      event.preventDefault();
+      $(".reser").remove();
+      $.delete("/api/tables/:customers")
     });
   </script>
 </body>

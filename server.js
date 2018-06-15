@@ -33,7 +33,26 @@ var customers = [
       app.get("/api/tables", function(req, res) {
         return res.json(customers);
       });
+
+      app.get("/api/tables/:customers", function(req, res) {
+        var chosen = req.params.customers;
+      
+        console.log(chosen);
+      
+        for (var i = 0; i < customer.length; i++) {
+          if (chosen === customer[i].customerName) {
+            return res.json(customer[i]);
+          }
+        }
+        return res.json(false);
+      });
     
+
+      app.delete("/api/tables/:customers", function (req, res){
+        customers.splice(req.params.customers, 1);
+        // customers.push(req.body);
+        res.json(customers);
+      });
 
       
 
