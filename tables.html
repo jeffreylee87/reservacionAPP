@@ -1,16 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+    crossorigin="anonymous">
   <script src="https://code.jquery.com/jquery.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <title>Document</title>
+  <style>
+    body {
+      background-color: #7fffd4;
+    }
+
+    ;
+    footer {
+      margin-top: 2%;
+    }
+
+    ;
+  </style>
+  <title>Tables</title>
 </head>
+
 <body>
-    
+  <div class="container">
+    <div class="jumbotron">
+      <h1 class="text-center">
+        <span class="fas fa-utensils fa-large"></span> Reservacion
+        <span class="fas fa-utensils fa-large"></span>
+      </h1>
+      <h3 class="text-center amount">No Reservations</h3>
+      <hr>
+      <div style="text-align:center">
+        <a href="/">
+          <button class="btn btn-danger btn-lg">
+            <span class="fab fa-fort-awesome"></span> Home</button>
+        </a>
+        <a href="/reserve">
+          <button class="btn btn-danger btn-lg">
+            <span class="fas fa-calendar-check"></span> Make Reservation</button>
+        </a>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">Current Reservations</h4>
+            </div>
+            <div class="panel-body" id="tableSection">
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="foot container">
+        <p>
+          <a href="/api/tables">API Table Link</a>
+          |
+          <a href="temp">API Wait List</a>
+          |
+          <a href="https://github.com/jeffreylee87/reservacionAPP">Github Repo</a>
+        </p>
+      </div>
+    </footer>
+  </div>
+  <script type="text/javascript">
+    $.get("/api/tables", function (data) {
+      $(".amount").html(`${data.length} Reservations`);
+      if (data) {
+        for (var i in data) {
+          // var div = $("<div class='reser'>");
+
+          var span = $(
+            `<h2><span class="label label-primary">${parseInt(i) + 1}</span> | : ${data[i].customerName} - ${data[i].customerID}</h2>`
+          );
+          $("#tableSection").append(span);
+          // $(".reser").append(span);
+        }
+      } else {
+        // var div = $("<div class='reser'>");
+        var span = $(`<span class="label label-primary">No Reservations</span>`);
+        $("#tableSection").append(span);
+        // $(".reser").append(span);
+      }
+
+    });
+  </script>
 </body>
+
 </html>

@@ -33,11 +33,28 @@ var customers = [
       app.get("/api/tables", function(req, res) {
         return res.json(customers);
       });
+    
 
       
 
 
+// Create New Characters - takes in JSON input
+app.post("/api/tables", function(req, res) {
+  // req.body hosts is equal to the JSON post sent from the user
+  // This works because of our body-parser middleware
+  var newcustomer = req.body;
+  
 
+  // Using a RegEx Pattern to remove spaces from newCharacter
+  // You can read more about RegEx Patterns later https://www.regexbuddy.com/regex.html
+  newcustomer.customerName = newcustomer.customerName.replace(/\s+/g, "").toLowerCase();
+
+  console.log(newcustomer);
+
+  customers.push(newcustomer);
+
+  res.json(newcustomer);
+});
 
 //starts the server to begin
 app.listen(PORT, function() {
